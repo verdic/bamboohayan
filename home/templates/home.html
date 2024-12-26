@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% comment %} {% block page_heading %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Welcome!</h1>
+    </div>
+{% endblock page_heading %} {% endcomment %}
+
+{% block content %}
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">Dashboard</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item active">Statistics</li>
+        </ol>
+        <div class="row">
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">Bamboo Species: {{ species }}</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-primary stretched-link" href="{% url 'species-list' %}">View Details</a>
+                        <div class="small text-primary"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">Mapped Species: {{ mapped_species }} </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-warning stretched-link" href="{% url 'coord-list' %}">View Details</a>
+                        <div class="small text-warning"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-md-6">
+                <div class="card bg-success text-white mb-4">
+                    <div class="card-body">Population: <br> {{ area_population_all }}</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <a class="small text-success stretched-link" href="#population">View Details</a>
+                        <div class="small text-success"><i class="fas fa-angle-right"></i></div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="row">
+            <div class="col-xl-12 col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Bamboo Species by Municipality
+                    </div>
+                    <div class="card-body">
+                        <select id="municipality-selector" class="form-control mb-3">
+                            <option value="">-- Select Municipality --</option>
+                            {% for municipality in municipalities %}
+                                <option value="{{ municipality }}">{{ municipality }}</option>
+                            {% endfor %}
+                        </select>
+                        <button id="generate-chart" class="btn btn-primary">Generate Graph</button>
+                        <div id="dynamic-chart" class="mt-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $(document).ready(function() {
+                $('#generate-chart').click(function() {
+                    const municipality = $('#municipality-selector').val();
+                    $.get('/generate_municipality_chart/', { municipality: municipality }, function(response) {
+                        $('#dynamic-chart').html(response.chart_html);
+                    }).fail(function(error) {
+                        $('#dynamic-chart').html(`<div class="alert alert-warning">${error.responseJSON.error}</div>`);
+                    });
+                });
+            });
+        </script>
+
+
+        <div class="row">
+            <div class="col-xl-12" id="population">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Bamboo Population by Specie
+                    </div>
+                    <div class="card-body">
+                        {{ column_chart|safe }}
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-area me-1"></i>
+                        Species Location Population Report
+                    </div>
+                    <div class="card-body">
+                        <a href="{% url 'print-place-population' %}" target="_blank" class="btn btn-secondary mb-2 float-right"> <i class="fas fa-print mr-2"></i>Print</a>
+                        {% include "reports/species_place_population_report.html" %}             
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
