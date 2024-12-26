@@ -1,0 +1,28 @@
+{% load static %}
+
+<div class="modal fade" id="delMissingRowsModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete With Missing Rows?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This will delete all the records with missing values relative to the selected column. 
+                This is essential for a more efficient data mining but if the amount of missing values is relatively large it is better to 
+                <a href="#"  data-toggle="modal" data-target="#delMissingColModal">
+                    delete the column 
+                </a>
+                instead of the rows.   
+                <p>Are you sure you want to delete the rows associated with this column?</p>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-danger" href="#">Yes</a>
+            </div>
+        </div>
+    </div>
+</div>

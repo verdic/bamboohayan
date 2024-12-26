@@ -1,0 +1,55 @@
+{% load static %}
+            
+<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+    <!-- Sidebar Toggle (Topbar) -->
+    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fa fa-bars"></i>
+    </button>
+
+    <h3 style="color: #1cc88a;" > Tangkiran Bamboo App </h3>
+ 
+    <!-- Topbar Navbar -->
+    <ul class="navbar-nav ml-auto">
+
+    <div class="topbar-divider d-none d-sm-block"></div>
+
+    <!-- Nav Item - User Information -->
+    {% if user.is_authenticated %}
+        <li class="nav-item dropdown no-arrow">
+        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{ user.username }}
+        </a>
+        <!-- Dropdown - User Information -->
+        <div class="dropdown-menu dropdown-menu-right shadow animated-grow-in" aria-labelledby="userDropdown">
+            {% comment %} <a class="dropdown-item" href="#">
+            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+            Profile
+            </a>
+            <div class="dropdown-divider"></div> {% endcomment %}
+            <a class="dropdown-item" href="{% url 'change_password' %}" >
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Modify Password
+            </a>
+            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+            Logout
+            </a>
+        </div>
+        </li>
+    {% else %}
+        <li class="nav-item ">
+        <a class="nav-item nav-link" href="{% url 'login' %}" style="color: #1cc88a;">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-white-400"></i>
+            Login
+        </a>
+        </li>
+        <li class="nav-item ">
+        <a class="nav-item nav-link" href="{% url 'register' %}"  style="color: #1cc88a;">
+            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-white-400"></i>
+            Register
+        </a>
+        </li>
+    {% endif %}
+
+    </ul>
+</nav>

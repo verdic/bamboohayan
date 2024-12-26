@@ -1,0 +1,127 @@
+{% load static %}
+
+<!-- Bootstrap core JavaScript-->
+  <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+  <!-- Core plugin JavaScript-->
+  <script src="{% static 'vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+
+  <!-- Custom scripts for all pages-->
+  <script src="{% static 'js/sb-admin-2.min.js' %}"></script>
+
+  <!-- Page level plugins
+  <script src="{% static 'vendor/chart.js/Chart.min.js' %}"></script>
+
+  <!-- Page level custom scripts 
+  <script src="{% static 'js/demo/chart-area-demo.js' %}"></script>
+  <script src="{% static 'js/demo/chart-pie-demo.js' %}"></script>
+  -->
+
+  <script>
+    setTimeout(function(){
+      $('#global_msg').fadeOut('fast');
+    }, 4500);
+
+
+    function HideFromTargetFeature()
+    {
+      var chk = document.getElementById("chkCheckAll");
+      var predictors = document.getElementsByName("predictors");
+      var target_cols = document.getElementsByName("target_column");
+
+      
+    }
+
+    function CheckAll() {
+        var chk = document.getElementById("chkCheckAll");
+        var column = document.getElementsByName("predictors");
+        var isChecked =false
+
+        if (chk.checked)
+        {
+          isChecked = true
+        }
+        else{
+          isChecked = false
+        }
+        
+        for (var i = 0, length = column.length; i < length; i++) {
+            column[i].checked= isChecked;
+        }
+      }
+
+    {% comment %} function RemoveChecked() {
+      var chk = document.getElementById("chkCheckAll");
+      var column = document.getElementsByName("predictors");
+      var isChecked =false
+
+      if (chk.checked)
+      {
+        isChecked = true
+      }
+      else{
+        isChecked = false
+      }
+      
+      for (var i = 0, length = column.length; i < length; i++) {
+          column[i].checked= isChecked;
+      }
+    } {% endcomment %}
+
+    function showSubmitButton()
+      {       
+        var txtDiv = document.getElementById("ConfirmMssageDiv");
+        var btnShow = document.getElementById("btnShow");
+        var column = document.getElementsByName("predictors");
+        var x=false;
+
+        for(var i=0, length=column.length; i < length; i++) {
+          if(column[i].checked){
+            x=true;
+          }
+        }
+
+        if (x==true){
+          if (txtDiv.style.display === "none") {
+            txtDiv.style.display = "block";
+            btnShow.style.display = "none"
+          } else {
+            txtDiv.style.display = "none";
+            btnShow.style.display = "block"
+          }
+        }
+    }
+
+    $(document).ready(function () {
+      $('#mean').click(function () {
+        let lbl = $('#mean').val();
+        $('.method_label').html('mean');
+      });
+
+      $('#median').click(function () {
+        let lbl = $('#median').val();
+        $('.method_label').html('median');
+      });
+
+      $('#replace').click(function () {
+        let lbl = $('#replace').val();
+        $('.method_label').html('replace');
+      });
+    });
+  </script>
+  <script>
+    // Function to dynamically set the height of the topbar
+    function setTopbarHeight() {
+        var h3Height = $('h1').outerHeight(); // Get the outer height of the h3 element
+        $('#topbar').height(h3Height); // Set the height of the topbar
+    }
+
+    // Initial height setting
+    setTopbarHeight();
+
+    // Adjust height on window resize
+    $(window).resize(function() {
+        setTopbarHeight();
+    });
+</script>

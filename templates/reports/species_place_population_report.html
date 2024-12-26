@@ -1,0 +1,29 @@
+<table id="speciesPopulationTable" class="table table-hover">
+    <thead>
+        <tr>
+            <th>Common Name</th>
+            <th>Place</th>
+            <th>Area Population</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in report_data %}
+            <tr class="table-light">
+                <td>{{ item.common_name }}</td>
+                <td>{{ item.place }}</td>
+                <td>{{ item.area_population }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $('#speciesPopulationTable').DataTable({
+            "paging": true,
+            "searching": true,
+            "info": true,
+            "lengthChange": true,
+            "pageLength": 10
+        });
+    });
+</script>

@@ -1,0 +1,12 @@
+{% load static %}
+
+<!-- Messages -->
+{% if messages %}
+    {% for message in messages %}
+        <div id="global_msg" class=" col-xl-10 col-md-4 alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif%}
+
+<!-- End of messages -->	

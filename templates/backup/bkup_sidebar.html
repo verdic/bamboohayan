@@ -1,0 +1,170 @@
+{% load static %}
+
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" style="background: Maroon;" id="accordionSidebar">
+
+  <!-- Sidebar - Brand -->
+  <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+    <div class="sidebar-brand-icon">
+        <img class="mr-1" src="{% static 'logo/csu.png' %}" alt="CSU Logo" style="width: 40px">
+    </div>
+    <div class="sidebar-brand-text mx-1">LEM</div>
+  </a>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider my-0">
+
+  <!-- Divider -->
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Interface
+  </div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Projects" aria-expanded="true" aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-cog"></i>
+      <span>Projects</span>
+    </a>
+    
+    <div id="Projects" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Options:</h6>
+        <a class="collapse-item" href="{% url 'project-home' %}">List</a>
+        <a class="collapse-item" href="{% url 'project-create' %}">Create</a>
+      </div>
+    </div>
+  </li>
+
+  <li class="nav-item">
+    <!-- Nav Item - Preprocessing Menu -->
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#preprocess" aria-expanded="true"
+      aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-cogs"></i>
+      <span>Preprocess</span>
+    </a>
+
+    <div id="preprocess" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        {% if user.is_authenticated and user.is_staff %}
+            {% if object.pk %}
+                <h6 class="collapse-header">Data Cleaning:</h6>
+                <a class="collapse-item" href="{% url 'preprocess_drop_col' object.id %}">Drop Columns</a>
+                <a class="collapse-item" href="{% url 'preprocess_inputation' object.id %}">Inputation</a>
+                <a class="collapse-item" href="{% url 'preprocess_drop_nan_row' object.id %}">Drop Rows</a>
+                <h6 class="collapse-header">Dummies:</h6>
+                <a class="collapse-item" href="{% url 'preprocess_gen_dummies' object.id %}">Generate Dummies</a>
+            {% elif project.pk %}
+                <h6 class="collapse-header">Data Cleaning:</h6>
+                <a class="collapse-item" href="{% url 'preprocess_drop_col' project.id %}">Drop Columns</a>
+                <a class="collapse-item" href="{% url 'preprocess_inputation' project.id %}">Inputation</a>
+                <a class="collapse-item" href="{% url 'preprocess_drop_nan_row' project.id %}">Drop Empty Rows</a>
+                <h6 class="collapse-header">Dummies:</h6>
+                <a class="collapse-item" href="{% url 'preprocess_gen_dummies' project.id %}">Generate Dummies</a>
+            {% else %}
+                <p>Please select a project</p>
+            {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Predictions Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#Predictions" aria-expanded="true"
+      aria-controls="collapseTwo">
+      <i class="fas fa-fw fa-line-chart"></i>
+      <span>Prediction Models</span>
+    </a>
+    <div id="Predictions" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        {% if user.is_authenticated and user.is_staff %}
+          {% if object.pk %}
+            <h6 class="collapse-header">Options:</h6>
+            <a class="collapse-item" href="{% url 'create-model' object.id %}">Create Prediction Model</a>
+            <a class="collapse-item" href="{% url 'model-listview' object.id %}">Models</a>
+          {% elif object.project.pk %}
+            <h6 class="collapse-header">Options:</h6>
+            <a class="collapse-item" href="{% url 'create-model' object.project.id %}">Create Prediction Model</a>
+            <a class="collapse-item" href="{% url 'model-listview' object.project.id %}">Models</a>
+          {% elif project.pk %}
+            <h6 class="collapse-header">Options:</h6>
+            <a class="collapse-item" href="{% url 'create-model' project.id %}">Create Prediction Model</a>
+            <a class="collapse-item" href="{% url 'model-listview' project.id %}">Models</a>
+          {% else %}
+              <h6 class="collapse-header">No project Selected</h6>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Utilities Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+      <i class="fas fa-fw fa-wrench"></i>
+      <span>Utilities</span>
+    </a>
+    <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Custom Utilities:</h6>
+        <a class="collapse-item" href="utilities-color.html">Colors</a>
+        <a class="collapse-item" href="utilities-border.html">Borders</a>
+        <a class="collapse-item" href="utilities-animation.html">Animations</a>
+        <a class="collapse-item" href="utilities-other.html">Other</a>
+      </div>
+    </div>
+  </li>
+
+  <!-- Divider --> 
+  <hr class="sidebar-divider">
+
+  <!-- Heading -->
+  <div class="sidebar-heading">
+    Addons
+  </div>
+
+  <!-- Nav Item - Pages Collapse Menu -->
+  <li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+      <i class="fas fa-fw fa-folder"></i>
+      <span>Pages</span>
+    </a>
+    <div id="collapsePages" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <h6 class="collapse-header">Login Screens:</h6>
+        <a class="collapse-item" href="login.html">Login</a>
+        <a class="collapse-item" href="register.html">Register</a>
+        <a class="collapse-item" href="forgot-password.html">Forgot Password</a>
+        <div class="collapse-divider"></div>
+        <h6 class="collapse-header">Other Pages:</h6>
+        <a class="collapse-item" href="404.html">404 Page</a>
+        <a class="collapse-item" href="blank.html">Blank Page</a>
+      </div>
+    </div>
+  </li>
+
+  <!-- Nav Item - Charts -->
+  <li class="nav-item">
+    <a class="nav-link" href="charts.html">
+      <i class="fas fa-fw fa-chart-area"></i>
+      <span>Charts</span></a>
+  </li>
+
+  <!-- Nav Item - Tables -->
+  <li class="nav-item">
+    <a class="nav-link" href="tables.html">
+      <i class="fas fa-fw fa-table"></i>
+      <span>Tables</span></a>
+  </li>
+
+  <!-- Divider -->
+  <hr class="sidebar-divider d-none d-md-block">
+
+  <!-- Sidebar Toggler (Sidebar) -->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
+  </div>
+
+</ul>
