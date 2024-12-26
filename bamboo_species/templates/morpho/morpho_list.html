@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block page_heading %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Bamboo Morphological Profiles</h1>
+    </div>
+{% endblock page_heading %}
+
+{% block content %}
+    <a class="btn btn-success text-black mb-4 float-right" href="{% url 'morpho-create' species_id %}">Add New</a>
+
+    {% include 'pagination.html' %}
+
+    {% if df.empty %}
+        <h5>No Species Data Yet!</h5>
+    {% else %}
+     <div class = "table-container">
+     <table class="table table-hover">
+        <thead>
+            <tr>
+                {% for column in df.columns %}
+                    <th>{{ column }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in df.iterrows %}
+                <tr>
+                    {% for value in row.1 %}
+                        <td>{{ value }}</td>
+                    {% endfor %}
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    </div>
+    {% endif %}
+    {% include 'pagination.html' %}
+    
+{% endblock %}
+
+

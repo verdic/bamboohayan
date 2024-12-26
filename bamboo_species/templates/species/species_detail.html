@@ -1,0 +1,156 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_heading %}
+    {% include 'gmaps.js' %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Bamboo Species</h1>
+    </div>
+{% endblock page_heading %}
+
+{% block content %}
+    <div class="card">
+        <div class="card-header p-3 mb-2 bg-gradient-success text-white">
+            BASIC INFORMATION 
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-xl-4 col-md-6 mb-2">
+                    <div class="card h-100 mb-2">
+                        <div class="card-header p-3 mb-2 ">
+                            <h5><strong>{{ species.common_name }}</strong></h5></div>
+                        <div class="card-body h-100">
+                            <p><strong>Scientific Name: </strong> {{ species.scientific_name }}</br>
+                            <p><strong>Habitat: </strong> {{ species.habitat }}</br>
+                            <p><strong>Uses: </strong> {{ species.uses }}</br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-xl-4 col-md-6 mb-2">
+                    <div class="card h-100 mb-2">
+                        <div class="card-header p-3 mb-2 ">
+                            <h5><strong>Image </strong></h5></div>
+                        <div class="card-body h-100">
+                            <figure class="figure">
+                                <img src="{{ species.image.url }}" 
+                                    class="figure-img img-fluid rounded" 
+                                    alt="Image of {{ species.common_name }}">
+                                {% comment %} <figcaption class="figure-caption">Image of {{ species.common_name }}.</figcaption> {% endcomment %}
+                            </figure>
+                            <a class="btn btn-sm btn-info mb-2" href="{% url 'species-update' species.id %}">Change Image</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-4 col-md-6 mb-5">
+                    <div class="card h-100 mb-2">
+                        <div class="card-header p-3 mb-2 ">
+                            <h5><strong>Location </strong></h5></div>
+                        <div class="card-body">
+                            <div id="map" class="h-90"></div>
+                            <script
+                                src="https://maps.googleapis.com/maps/api/js?key={{ map_key }}&callback=initMap&v=weekly" ></script>
+                            {% comment %} <figcaption class="figure-caption ">{{ species.common_name }}'s locations</figcaption> {% endcomment %}
+                            <a class="btn btn-sm btn-info mb-4 mt-2" href="{% url 'coord-list-species' species.id %}">Manage Locations</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="card-footer ">
+            {% if not deleteMode %}
+                <a class = "btn btn-secondary btn-sm mb-2 text-left mr-1 mt-2" href="{% url 'species-list' %}">Show List</a>
+                <a class = "btn btn-danger btn-sm mb-2 text-left mr-1 mt-2" href="{% url 'species-delete' species.id %}">Delete</a>
+                <a class = "btn btn-warning btn-sm mb-2 text-left mr-1 mt-2" href="{% url 'species-update' species.id %}">Modify</a>
+                <a class = "btn btn-success btn-sm mb-2 text-left mr-1 mt-2" href="{% url 'species-create' %}">Create New</a>
+            {% endif %}
+        </div>
+    </div>
+
+    {% if user.is_authenticated %}
+    <div id="accordion" class="mt-4">
+        <div class="card" id="morpho-card">
+            <div class="card-header p-3 mb-2 bg-gradient-success text-white">
+            <a class="card-link text-white" data-toggle="collapse" href="#morpho">
+                MORPHOLOGICAL PROFILE 
+            </a>
+            </div>
+            <div id="morpho" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+                {% if morpho.bamboo_species == species %}
+                    {% include 'morpho/morpho.html' %}
+                {% else %}
+                    <strong>No morphological record yet.</strong>
+                    <a class = "text-success " href="{% url 'morpho-create' species.id %}">Create One Now!</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+
+        <div class="card" id="pytho-card">
+            <div class="card-header p-3 mb-2 bg-gradient-warning text-dark">
+            <a class="card-link text-white" data-toggle="collapse" href="#phyto">
+                PHYTOCHEMICAL PROFILE
+            </a>
+            </div>
+            <div id="phyto" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+                {% if phytochem.bamboo_species == species %}
+                    {% include 'phytochem/phytochem.html' %}
+                {% else %}
+                    <strong>No phytochemical record yet.</strong>
+                    <a class = "text-success " href="{% url 'phytochem-create' species.id %}">Create One Now!</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+
+        <div class="card" id="mol-card">
+            <div class="card-header p-3 mb-2 bg-gradient-danger text-white">
+            <a class="card-link text-white" data-toggle="collapse" href="#molecular">
+                MOLECULAR PROFILE
+            </a>
+            </div>
+            <div id="molecular" class="collapse" data-parent="#accordion">
+            <div class="card-body">
+                {% if molecular.bamboo_species == species %}
+                    {% include 'molecular/molecular.html' %}
+                {% else %}
+                    <strong>No molecular record yet.</strong>
+                    <a class = "text-success " href="{% url 'molecular-create' species.id %}">Create One Now!</a>
+                {% endif %}
+            </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+ {% if deleteMode %}
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="DeleteRecord" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Record?</h5>
+                    <a  href="{% url 'species-detail' species.id %}">
+                        <span aria-hidden="true">×</span>
+                    </a>    
+                </div>
+                <div class="modal-body">
+                    <p>This record will be permanently deleted.</p>
+                    <p>Are you sure you want to delete <strong>{{ species }}</strong>?</p>
+                </div>
+                <div class="modal-footer">
+                    <form method="post">
+                        {% csrf_token %}
+
+                        <button type="submit" class="btn btn-danger btn-sm mb-2">Yes, delete</button>
+                        <a class = "btn btn-primary btn-sm mb-2" href="{% url 'species-detail' species.id %}">No, cancel</a>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    {% endif %}
+
+{% endblock %}
+
+

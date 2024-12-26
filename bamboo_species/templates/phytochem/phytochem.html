@@ -1,0 +1,60 @@
+<div class="panel">
+    {% if not deleteMode %}
+        <a class = "btn btn-warning btn-sm mr-1 " 
+        href="{% url 'phytochem-update' species.id %}">Modify Content</a>
+        <a class = "btn btn-danger btn-sm mr-1 " 
+        href="{% url 'phytochem-delete' species.id %}">Remove Morphological Content</a>
+    {% endif %}
+</div>
+<hr>
+<p class="text-success"><strong>a) Rhizome/culm bases (in adult/mature plants)</strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>a. anthocyanin </strong></td>
+        <td class="font-italic">{{ phytochem.anthocyanin }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>b. carotenoids </strong></td>
+        <td class="font-italic">{{ phytochem.carotenoids }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>c. coumarins </strong></td>
+        <td class="font-italic">{{ phytochem.coumarins }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>d. flavonoids </strong></td>
+        <td class="font-italic">{{ phytochem.flavonoids }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>e. phenols </strong></td>
+        <td class="font-italic">{{ phytochem.phenols }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>f. quinones </strong></td>
+        <td class="font-italic">{{ phytochem.quinones }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>g. saponins </strong></td>
+        <td class="font-italic">{{ phytochem.saponins }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>h. steroids </strong></td>
+        <td class="font-italic">{{ phytochem.steroids }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>i. tannins </strong></td>
+        <td class="font-italic">{{ phytochem.tannins }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>j. terpenoids </strong></td>
+        <td class="font-italic">{{ phytochem.terpenoids }}</strong>   </td>
+    </tr>
+
+
+
+
+
+
+
+</table>
+

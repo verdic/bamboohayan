@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <h1>Bamboo Species Location Profile</h1>
+    
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {{ form.bamboo_species|as_crispy_field }}
+        {{ form.accession_no|as_crispy_field }}
+        {{ form.area_population|as_crispy_field }}
+        {{ form.collection_date|as_crispy_field }}
+        {{ form.place|as_crispy_field }}
+
+        <div id="coordinate-input-section">
+            <label>Coordinate</label>
+            <!-- Toggle for choosing input method -->
+            <div class="form-check">
+                <input 
+                    class="form-check-input" 
+                    type="radio" 
+                    name="coordinate_input_method" 
+                    id="coordinateTextInputOption" 
+                    value="text" 
+                    checked 
+                    onclick="toggleCoordinateInput('text')">
+                <label class="form-check-label" for="coordinateTextInputOption">
+                    Enter Coordinates (e.g., 18.16668°N, 121.74556°E 260Ft)
+                </label>
+            </div>
+            <div class="form-check">
+                <input 
+                    class="form-check-input" 
+                    type="radio" 
+                    name="coordinate_input_method" 
+                    id="coordinatePhotoUploadOption" 
+                    value="photo" 
+                    onclick="toggleCoordinateInput('photo')">
+                <label class="form-check-label" for="coordinatePhotoUploadOption">
+                    Upload Geotagged Photo
+                </label>
+            </div>
+
+            <!-- Text Input for Coordinates -->
+            <div id="textInputSection" style="margin-top: 15px;">
+                {{ form.coordinate|as_crispy_field }}
+            </div>
+
+            <!-- File Upload for Geotagged Photo -->
+            <div id="photoUploadSection" style="display: none; margin-top: 15px;">
+                <label for="geotaggedPhoto">Upload Geotagged Photo</label>
+                <input 
+                    type="file" 
+                    id="geotaggedPhoto" 
+                    name="geotagged_photo" 
+                    class="form-control" 
+                    accept="image/*">
+                <small class="form-text text-muted">
+                    The uploaded photo should contain geotagging metadata.
+                </small>
+            </div>
+        </div>
+
+        {% if editMode or createMode %}
+            <input type="submit" value="Save" class="btn btn-primary mt-4">
+        {% elif deleteMode %}
+            <input type="submit" value="Confirm" class="btn btn-primary mb-4">
+        {% else %}
+            <a class="btn btn-danger btn-sm mb-2 mr-1 mt-2 float-right" href="{% url 'coord-delete' pk %}">Delete</a>
+            <a class="btn btn-warning btn-sm mb-2 mr-1 mt-2 float-right" href="{% url 'coord-update' pk %}">Modify</a>
+        {% endif %}
+    </form>
+
+    <script>
+        function toggleCoordinateInput(method) {
+            const textInputSection = document.getElementById("textInputSection");
+            const photoUploadSection = document.getElementById("photoUploadSection");
+            const textInputField = document.getElementById("id_coordinate");
+            const photoInputField = document.getElementById("geotaggedPhoto");
+
+            if (method === 'text') {
+                textInputSection.style.display = "block";
+                photoUploadSection.style.display = "none";
+                textInputField.required = true; // Make text input required
+                photoInputField.required = false; // Remove required from photo
+            } else if (method === 'photo') {
+                textInputSection.style.display = "none";
+                photoUploadSection.style.display = "block";
+                textInputField.required = false; // Remove required from text input
+                photoInputField.required = true; // Make photo required
+            }
+        }
+    </script>
+
+
+    
+{% endblock %}

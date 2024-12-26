@@ -1,0 +1,60 @@
+<div class="panel">
+    {% if not deleteMode %}
+        <a class = "btn btn-warning btn-sm mr-1 " 
+        href="{% url 'molecular-update' species.id %}">Modify Content</a>
+        <a class = "btn btn-danger btn-sm mr-1 " 
+        href="{% url 'molecular-delete' species.id %}">Remove Morphological Content</a>
+    {% endif %}
+</div>
+<hr>
+
+<p class="text-success"><strong>Identification according to morphology</strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Family </strong></td>
+        <td class="font-italic">{{ molecular.morpho_family }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Genus </strong></td>
+        <td class="font-italic">{{ molecular.morpho_genus }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Species </strong></td>
+        <td class="font-italic">{{ molecular.morpho_species }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Variety </strong></td>
+        <td class="font-italic">{{ molecular.morpho_variety }}</strong>   </td>
+    </tr>
+</table>
+
+<hr>
+
+<p class="text-success"><strong>Identification according to DNA sequencing using the rbcL gene</strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Family </strong></td>
+        <td class="font-italic">{{ molecular.dna_rbcl_family }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Genus </strong></td>
+        <td class="font-italic">{{ molecular.dna_rbcl_genus }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Species </strong></td>
+        <td class="font-italic">{{ molecular.dna_rbcl_species }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>Variety </strong></td>
+        <td class="font-italic">{{ molecular.dna_rbcl_variety }}</strong>   </td>
+    </tr>
+     <tr class="table-light">
+        <td style="width: 25%;"><strong>DNA query length </strong></td>
+        <td class="font-italic">{{ molecular.dna_query_length }}</strong>   </td>
+    </tr>
+     <tr class="table-light">
+        <td style="width: 25%;"><strong>Percentage Identification </strong></td>
+        <td class="font-italic">{{ molecular.percentage_identification }}</strong>   </td>
+    </tr>
+</table>
+

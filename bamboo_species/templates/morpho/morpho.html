@@ -1,0 +1,124 @@
+<div class="panel">
+    {% if not deleteMode %}
+        <a class = "btn btn-warning btn-sm mr-1 " 
+        href="{% url 'morpho-update' species.id %}">Modify Content</a>
+        <a class = "btn btn-danger btn-sm mr-1 " 
+        href="{% url 'morpho-delete' species.id %}">Remove Morphological Content</a>
+    {% endif %}
+</div>
+<hr>
+<p class="text-success"><strong>a) Rhizome/culm bases (in adult/mature plants)</strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>a.1. Culm base morphology: </strong></td>
+        <td class="font-italic">{{ morpho.culm_base }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>a.2. Culm base branching(tillering)</strong></td>
+        <td class="font-italic">{{ morpho.branching }} </td>
+    </tr>
+</table>
+
+<p class="text-success"><strong>b. Culm-sheath morphology</strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>b.1. Habit </strong></td>
+        <td>{{ morpho.habit }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>b.2. Culm internodes </strong></td>
+        <td><strong>{{ morpho.culm_internodes }} </strong></td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>b.3. Primary buds per mid-culm node </strong></td>
+        <td><strong>{{ morpho.primary_buds_per_mid_culm_node }} </strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>b.4. culm leaves / girdle </strong></td>
+        <td><strong>{{ morpho.culm_leaves }} </strong>   </td>
+    </tr>
+</table>
+
+<p class="text-success"><strong>c. Internode appearance </strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>c.1. Internode length (relative) </strong></td>
+        <td>{{ morpho.internode_length_relative }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>c.2. numerical measurement of internode length (cm) </strong></td>
+        <td><strong>{{ morpho.internode_length }} </strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>c.3. numerical measurement of internode width (cm) </strong></td>
+        <td><strong>{{ morpho.internode_width }} </strong>   </td>
+    </tr>
+</table>
+
+<p class="text-success"><strong>d. Nodal structure and appearance </strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>d.1. Nodal line position </strong></td>
+        <td>{{ morpho.nodal_line_position }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>d.2. Nodal line diameter </strong></td>
+        <td ><strong>{{ morpho.nodal_line_diameter }} </strong>   </td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><p class="text-success"><strong>e. Stem/culm color and appearance:</strong></p></td>
+        <td><strong>{{ morpho.culm_color_appearance }} </strong></td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><p class="text-success"><strong>f. Leaf color and appearance</strong></p></td>
+        <td><strong>{{ morpho.leaf_color_appearance }} </strong></td>
+    </tr>
+</table>
+
+<p class="text-success"><strong>g. Young shoot appearance </strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>g.1. location of trichomes in culm sheath </strong></td>
+        <td>{{ morpho.shoot_location_of_trichomes_in_culm_sheath }}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>g.2. concentration of trichomes in culm sheath </strong></td>
+        <td ><strong>{{ morpho.shoot_concentration_of_trichomes_in_culm_sheath }} </strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>g.3. culm sheath color </strong></td>
+        <td ><strong>{{ morpho.shoot_culm_sheath_color }} </strong>   </td>
+    </tr>
+</table>
+
+<p class="text-success"><strong>h. Branching appearance </strong>
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>h.1. Branch initiation/development </strong></td>
+        <td>{{ morpho.branch_initiation_development}}</strong>   </td>
+    </tr>
+    <tr class="table-light">
+        <td style="width: 25%;"><strong>h.2. Branching pattern </strong></td>
+        <td ><strong>{{ morpho.branching_pattern }} </strong>   </td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><p class="text-success"><strong>i. Incidence of flowering</strong></p></td>
+        <td><strong>{{ morpho.incidence_of_flowering }} </strong></td>
+    </tr>
+</table>
+
+<table class="table table-hover">
+    <tr class="table-light">
+        <td style="width: 25%;"><strong class="text-success">j. Inner stem appearance</strong></td>
+        <td><strong>{{ morpho.inner_stem_appearance }} </strong></td>
+    </tr>
+</table>
