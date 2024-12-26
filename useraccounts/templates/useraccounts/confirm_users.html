@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block page_heading %}
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Veryfy User(s)</h1>
+    </div>
+{% endblock page_heading %}
+
+{% block content %}
+    <form method="POST" action="{% url 'confirm_users' %}">
+        {% csrf_token %}
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Username</th>
+                        <th colspan="3">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users_to_confirm %}
+                        <tr class="table-light">
+                            <td>
+                                {{ user.username }}<br>
+                            </td>
+                            <td>
+                                <input type="checkbox" name="selected_users" value="{{ user.id }}">
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        <button type="submit" class="btn btn-primary">Confirm Selected Users</button>
+    </form>
+  
+{% endblock %}
