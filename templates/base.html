@@ -12,15 +12,11 @@
     <title>Tangkiran Bamboos</title>
 
     <!-- Custom fonts for this template-->
-    <link href="{% static 'vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
-    <link href="{% static 'fonts/fonts.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <!-- Custom styles for this template-->
-    <link href="{% static 'css/sb-admin-2.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.css" integrity="sha512-gOfBez3ehpchNxj4TfBZfX1MDLKLRif67tFJNLQSpF13lXM1t9ffMNCbZfZNBfcN2/SaWvOf+7CvIHtQ0Nci2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Progress Arrow Menu -->
-    <link href="{% static 'css/progress_arrow.css' %}" rel="stylesheet">
-    <script src="{% static 'js/jquery-3.5.1.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exif-js/2.3.0/exif.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/piexifjs"></script>
     <!-- DataTables CSS -->
@@ -82,22 +78,22 @@
           <div class="container-fluid">
             {% include 'messages.html' %}
             <!-- Page Heading -->
-            {% block page_heading %} 
+            {% block page_heading %}
             {% endblock page_heading %}
-            
+
             <!-- Content Row -->
             <div class="row">
               <div class="col-xl-10 col-md-4">
                 {% block search %}
-                
+
                 {% endblock search %}
-                
+
                 {% block content %}
-                 
+
                 {% endblock content %}
               </div>
             </div>
-            
+
           </div>
           <!-- /.container-fluid -->
 
@@ -119,16 +115,16 @@
       <i class="fas fa-angle-up"></i>
     </a>
 
-    
+
     <!--  Modals -->
-    {% include 'logout_modal.html' %} 
+    {% include 'logout_modal.html' %}
 
     {% include 'delete_missing_rows.html' %}
     {% include 'delete_missing_col.html' %}
 
     <!-- Javascripts -->
     {% include 'javascripts.html' %}
-    
- 
+
+
   </body>
 </html>

@@ -27,7 +27,7 @@ GOOGLE_API_KEY = "AIzaSyAmr6OBJ_ja2rhvNsTejK2lk7ZiIbTGg6g"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [ 'verdict.pythonanywhere.com']
 
 
 # Application definition
@@ -41,7 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     'crispy_forms',
     'crispy_bootstrap4',
-    'home', 
+    'home',
     'bamboo_species',
     'useraccounts',
     'django_countries',
@@ -65,7 +65,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
-            BASE_DIR / 'templates', 
+            BASE_DIR / 'templates',
         ],
         "APP_DIRS": True,
         "OPTIONS": {
@@ -87,12 +87,15 @@ WSGI_APPLICATION = "bamboohayan.wsgi.application"
 
 DATABASES = {
     "default": {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'tangkiran',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST':'localhost',
-        'PORT':'3306',
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',  # Path to your SQLite database file
+
+        # 'ENGINE': 'django.db.backends.mysql',
+        # 'NAME': 'tangkiran',
+        # 'USER': 'root',
+        # 'PASSWORD': '',
+        # 'HOST':'localhost',
+        # 'PORT':'3306',
     }
 }
 
@@ -133,11 +136,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
+# URL to access static files
+STATIC_URL = '/static/'
 
+# Additional directories to search for static files
 STATICFILES_DIRS = [
-    BASE_DIR / 'static',
+    BASE_DIR / 'static',  # Local static files directory (for development)
 ]
+
+# Directory for `collectstatic` to store collected static files (for production)
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 MEDIA_ROOT = BASE_DIR / 'media'
 MEDIA_URL = '/media/'
