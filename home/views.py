@@ -27,7 +27,7 @@ def get_population_all():
 
 def generate_column_chart(data):
    color_list = [f'rgb({random.randint(0, 255)}, {random.randint(0, 255)}, {random.randint(0, 255)})' for _ in range(len(data))]
-   
+
    fig = go.Figure(data=[go.Bar(x=list(data.keys()), y=list(data.values()), marker=dict(color=color_list))])
    chart_html = plot(fig, output_type='div')
    return chart_html
@@ -43,6 +43,75 @@ def get_chart_data():
       data[bamboo_species] = sum_population
    return data
 
+def parse_coordinates_with_elevation(coordinate):
+    try:
+        # Remove commas and split the coordinate string
+        cleaned_coordinate = coordinate.replace(",", "")
+        parts = cleaned_coordinate.split()
+
+        # Extract latitude and longitude
+        lat = float(parts[0].replace("°N", "").replace("°S", "-").strip())
+        lon = float(parts[1].replace("°E", "").replace("°W", "-").strip())
+
+        # Extract elevation (last part of the string)
+        elevation_ft = parts[-1].replace("Ft", "").strip()
+        elevation_m = float(elevation_ft) * 0.3048  # Convert feet to meters
+
+        return lat, lon, elevation_m
+    except Exception as e:
+        print(f"Error parsing coordinate '{coordinate}': {e}")
+        return None, None, None
+
+def generate_elevation_chart():
+    elevation_data = {}
+    species_list = BambooSpecies.objects.values_list('common_name', flat=True)
+
+    for species in species_list:
+        locations = SpeciesLocation.objects.filter(bamboo_species__common_name=species)
+        elevations = []
+        for location in locations:
+            _, _, elevation_m = parse_coordinates_with_elevation(location.coordinate)
+            if elevation_m is not None:
+                elevations.append(elevation_m)
+
+        if elevations:
+            elevation_data[species] = {
+                "max_elevation": max(elevations),
+                "min_elevation": min(elevations),
+            }
+        else:
+            print(f"No valid elevation data for species: {species}")
+
+    # Prepare data for the chart
+    species_names = list(elevation_data.keys())
+    max_elevations = [elevation_data[species]['max_elevation'] for species in species_names]
+    min_elevations = [elevation_data[species]['min_elevation'] for species in species_names]
+
+    # Generate Plotly Chart
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=species_names,
+        y=max_elevations,
+        name='Max Elevation',
+        marker_color='blue'
+    ))
+    fig.add_trace(go.Bar(
+        x=species_names,
+        y=min_elevations,
+        name='Min Elevation',
+        marker_color='orange'
+    ))
+
+    fig.update_layout(
+        title="Elevation Levels by Bamboo Species",
+        xaxis_title="Bamboo Species",
+        yaxis_title="Elevation (meters)",
+        barmode='group',
+    )
+
+    chart_html = plot(fig, output_type='div')
+    return chart_html
+
 def generate_place_population_report():
    bamboo_species = BambooSpecies.objects.all()
    report_data = []
@@ -57,33 +126,34 @@ def generate_place_population_report():
          })
 
    return report_data
-    
+
 def index(request):
    context = {
         'column_chart': generate_column_chart(get_chart_data()),
         'species': BambooSpecies.objects.all().count(),
         'mapped_species': get_maped_species(),
         'area_population_all': get_population_all(),
+        'elevation_chart': generate_elevation_chart(),
         'report_data': generate_place_population_report(),
         'municipalities': [
             "Abulug", "Alcala", "Allacapan", "Amulung", "Aparri", "Baggao", "Ballesteros", "Buguey", "Calayan",
             "Camalaniugan", "Claveria", "Enrile", "Gattaran", "Gonzaga", "Iguig", "Lal-lo", "Lasam", "Pamplona",
-            "Peñablanca", "Piat", "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", "Santa Teresita", 
+            "Peñablanca", "Piat", "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", "Santa Teresita",
             "Santo Niño", "Solana", "Tuao", "Tuguegarao City"
         ]
     }
-   
-   return render(request, 'home.html', context) 
+
+   return render(request, 'home.html', context)
 
 def generate_municipality_chart(request):
     municipalities = [
         "Abulug", "Alcala", "Allacapan", "Amulung", "Aparri", "Baggao", "Ballesteros", "Buguey", "Calayan",
         "Camalaniugan", "Claveria", "Enrile", "Gattaran", "Gonzaga", "Iguig", "Lal-lo", "Lasam", "Pamplona",
-        "Peñablanca", "Piat", "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", "Santa Teresita", 
+        "Peñablanca", "Piat", "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", "Santa Teresita",
         "Santo Niño", "Solana", "Tuao", "Tuguegarao City"
     ]
     selected_municipality = request.GET.get('municipality', None)
-    
+
     if selected_municipality:
         species_data = SpeciesLocation.objects.filter(
             place__icontains=selected_municipality
@@ -91,7 +161,7 @@ def generate_municipality_chart(request):
 
         if not species_data.exists():
             return JsonResponse({'error': f"No bamboo species recorded yet in {selected_municipality}"}, status=404)
-        
+
         data = {entry['bamboo_species__common_name']: entry['species_count'] for entry in species_data}
     else:
         species_data = SpeciesLocation.objects.values(
@@ -109,5 +179,5 @@ def print_place_population(request):
    # Generate the HTML content using the template and data
    report_data = generate_place_population_report()
    context = {'report_data': report_data}
-   
+
    return render(request, 'reports/print_place_population_report.html', context)
