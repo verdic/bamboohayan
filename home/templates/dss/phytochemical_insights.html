@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Phytochemical Composition Charts
+            </div>
+            <div class="card-body">
+                <p class="mt-2 style=text-align: center;">Supports research on medicinal or industrial applications of bamboo.</p>
+                <div class="chart-container">
+                    <h2>Heatmap: Intensity of Phytochemicals Across Species</h2>
+                    {{ heatmap_html|safe }}
+                </div>
+                <hr class="sidebar-divider">
+                <div class="chart-container">
+                    <h2>Bar Chart: Species with High Phytochemical Concentrations</h2>
+                    {{ bar_chart_html|safe }}
+                </div>
+                    
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

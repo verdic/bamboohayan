@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+        }
+    </style>
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Habitat Sustainability Chart
+            </div>
+            <hr class="sidebar-divider">
+            <div class="card-body">
+                <p class="mt-2" style="text-align: center;">Identifies areas for conservation or propagation efforts based on ecological preferences.</p>
+                    {{ chart_html|safe }}
+            </div>
+        </div>
+    </div>
+    
+{% endblock content %}

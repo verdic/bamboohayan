@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+    <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Propagation and Rhizome Types Charts
+            </div>
+            <div class="card-body">
+                <p class="mt-2 style=text-align: center;">Aids in standardizing farming practices for better yield.</p>
+                <div class="chart-container">
+                    <h2>Pie Chart: Popularity of Propagation Methods</h2>
+                    {{ pie_chart_html|safe }}
+                </div>
+                <div class="chart-container">
+                    <h2>Bar Chart: Distribution of Rhizome Types</h2>
+                    {{ bar_chart_html|safe }}
+                </div>
+                    
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

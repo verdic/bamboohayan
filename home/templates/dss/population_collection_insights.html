@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <i class="fas fa-chart-bar me-1"></i>
+                        Population and Collection Trends
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-container">
+                            <h2>Line Chart: Changes in Bamboo Population Over Time</h2>
+                            {{ line_chart_html|safe }}
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="chart-container">
+                            <h2>Histogram: Frequency of Collections by Municipality</h2>
+                            {{ hist_municipality_chart_html|safe }}
+                        </div>
+                        <hr class="sidebar-divider">
+                        <div class="chart-container">
+                            <h2>Histogram: Frequency of Collections by Date</h2>
+                            {{ hist_date_chart_html|safe }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+{% endblock content %}

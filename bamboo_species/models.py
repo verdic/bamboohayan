@@ -41,7 +41,7 @@ class MorphologicalProfile(models.Model):
     internode_length_relative = models.TextField()                                  #  internode length relative
     internode_length = models.FloatField()                                          # internode length
     internode_width = models.FloatField()                                           # internode width
-    nodal_line_position = models.CharField(max_length=30)                           # nodal line position
+    nodal_line_position = models.CharField(max_length=40)                           # nodal line position
     nodal_line_diameter = models.CharField(max_length=60)                           #  nodal line diameter
     culm_color_appearance = models.CharField(max_length=15)                         # culm color appearance
     leaf_color_appearance = models.CharField(max_length=15)                         # leaf color appearance
@@ -50,7 +50,7 @@ class MorphologicalProfile(models.Model):
     shoot_culm_sheath_color = models.CharField(max_length=60)                       # shoot culm sheath color
     branch_initiation_development = models.CharField(max_length=120)                # branch initiation development
     branching_pattern = models.CharField(max_length=15)                             # branching pattern
-    incidence_of_flowering = models.CharField(max_length=15)                        # incidence of flowering
+    incidence_of_flowering = models.CharField(max_length=100)                        # incidence of flowering
     inner_stem_appearance = models.CharField(max_length=30)                         # inner stem appearance
 
     def __str__(self):
@@ -81,12 +81,12 @@ class PhytochemicalProfile(models.Model):
 class MolecularProfile(models.Model):
     bamboo_species = models.OneToOneField(BambooSpecies, on_delete=models.CASCADE, primary_key=True, related_name='bamboo_species_molecular_profile')
     morpho_family=models.CharField(max_length=25)                   # morpho family
-    morpho_genus=models.CharField(max_length=25)                    # morpho genus
-    morpho_species=models.CharField(max_length=25)                  # morpho species
+    morpho_genus=models.CharField(max_length=40)                    # morpho genus
+    morpho_species=models.CharField(max_length=40)                  # morpho species
     morpho_variety=models.CharField(max_length=25, null=True)       # morpho variety
     dna_rbcl_family=models.CharField(max_length=25)                 # dna rbcl family
-    dna_rbcl_genus=models.CharField(max_length=25)                  # dna rbcl genus
-    dna_rbcl_species=models.CharField(max_length=25)                # dna rbcl species
+    dna_rbcl_genus=models.CharField(max_length=40)                  # dna rbcl genus
+    dna_rbcl_species=models.CharField(max_length=40)                # dna rbcl species
     dna_rbcl_variety=models.CharField(max_length=25, null=True)     # dna rbcl variety
     dna_query_length = models.IntegerField()                        # dna query length
     percentage_identification= models.FloatField()                  # percentage identification

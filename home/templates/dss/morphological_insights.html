@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .chart-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+
+        <div class="col-xl-12">
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-chart-bar me-1"></i>
+                Morphological Features Charts
+            </div>
+            <div class="card-body">
+                <p class="mt-2 style=text-align: center;">Guides species selection for specific applications based on structural properties.</p> 
+                <div class="chart-container">
+                    <h3>Boxplot: Internode Length</h3>
+                    {{ boxplot_length_html|safe }}
+                </div>
+                <hr class="sidebar-divider">
+                <div class="chart-container">
+                    <h3>Boxplot: Internode Width</h3>
+                    {{ boxplot_width_html|safe }}
+                </div>
+                  <hr class="sidebar-divider">
+                <div class="chart-container">
+                    <h3>Radar Chart: Comparison of Morphological Attributes</h3>
+                    {{ radar_chart_html|safe }}
+                </div>    
+            </div>
+        </div>
+    </div>
+{% endblock content %}

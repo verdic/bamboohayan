@@ -2,7 +2,16 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
+    
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Population Density Heatmap</h1>
+        <p>Visualizing the density of bamboo populations across mapped locations</p>
+    </div>
+
     <div id="map" style="width: 100%; height: 600px;"></div>
+
+    <a href="{% url 'coord-list' %}" class="btn btn-secondary text-white mb-2 mt-4 ml-2">Show Mapped Locations</a>
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
     <script>
