@@ -13,7 +13,6 @@
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/startbootstrap-sb-admin-2/4.1.4/css/sb-admin-2.css" integrity="sha512-gOfBez3ehpchNxj4TfBZfX1MDLKLRif67tFJNLQSpF13lXM1t9ffMNCbZfZNBfcN2/SaWvOf+7CvIHtQ0Nci2A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
@@ -52,6 +51,15 @@
         .gm-style-iw {
             display: none; /* Hides the default close button */
         }
+
+        .collapse {
+          display: none;
+        }
+
+        .collapse.show {
+          display: block;
+        }
+
     </style>
   </head>
 
@@ -125,6 +133,19 @@
     <!-- Javascripts -->
     {% include 'javascripts.html' %}
 
+    <script>
+        function toggleCollapse(id) {
+          const element = document.getElementById(id);
+          if (element.classList.contains('show')) {
+            element.classList.remove('show'); // Collapse the section
+            element.style.display = 'none';
+          } else {
+            element.classList.add('show'); // Expand the section
+            element.style.display = 'block';
+          }
+        }
+
+    </script>
 
   </body>
 </html>

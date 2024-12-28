@@ -1,12 +1,9 @@
 {% load static %}
 
-<ul class="navbar-nav bg-success sidebar sidebar-dark accordion"  id="accordionSidebar">
+<ul class="navbar-nav bg-success sidebar sidebar-dark accordion" id="accordionSidebar">
 
   <!-- Sidebar - Brand -->
   <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home' %}">
-    <!--<div class="sidebar-brand-icon">-->
-    <!--    <img class="mr-1" src="{% static 'logo/csu.png' %}" alt="CSU Logo" style="width: 40px">-->
-    <!--</div>-->
     <div class="sidebar-brand-text mx-1">Tangkiran</div>
   </a>
 
@@ -23,7 +20,7 @@
 
   <!-- Bamboo Species - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link " href="{% url 'home' %}">
+    <a class="nav-link" href="{% url 'home' %}">
       <i class="fas fa-tachometer-alt"></i>
       <span>Dashboard</span>
     </a>
@@ -31,24 +28,23 @@
 
   <!-- Bamboo Species - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#species" aria-expanded="true"
-      aria-controls="collapseTwo">
+    <a class="nav-link" href="#" onclick="toggleCollapse('species')">
       <span>Manage Species</span>
     </a>
-    <div id="species" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="species" class="collapse">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="{% url 'species-list' %}">List</a>
         <a class="collapse-item" href="{% url 'species-create' %}">Create</a>
       </div>
     </div>
   </li>
+
   {% if species_id and user.is_authenticated %}
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#profiles"
-    aria-expanded="false" aria-controls="collapseTwo">
-        Profiles
+    <a class="nav-link" href="#" onclick="toggleCollapse('profiles')">
+      <span>Profiles</span>
     </a>
-    <div id="profiles" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="profiles" class="collapse">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="#morpho-card">Morphological Profile</a>
         <a class="collapse-item" href="#pytho-card">Phytochemical Profile</a>
@@ -57,17 +53,16 @@
     </div>
   </li>
   {% endif %}
+
   <!-- Divider -->
   <hr class="sidebar-divider">
 
-  <!-- Bamboo Species LOCATIONS - Pages Collapse Menu -->
+  <!-- Bamboo Species Locations - Pages Collapse Menu -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="{% url 'species-list' %}" data-toggle="collapse" data-target="#coord" aria-expanded="true"
-        aria-controls="collapseTwo">
-
+    <a class="nav-link" href="#" onclick="toggleCollapse('coord')">
       <span>Species Locations and Population</span>
     </a>
-    <div id="coord" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="coord" class="collapse">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="{% url 'coord-list' %}">List</a>
         <a class="collapse-item" href="{% url 'coord-create' %}">New Location</a>
@@ -75,17 +70,14 @@
     </div>
   </li>
 
-<!-- Divider -->
   <hr class="sidebar-divider">
 
-  <!-- Bamboo Species LOCATIONS - Pages Collapse Menu -->
+  <!-- Administration -->
   <li class="nav-item">
-    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#confirm_user" aria-expanded="true"
-        aria-controls="collapseTwo">
-
+    <a class="nav-link" href="#" onclick="toggleCollapse('confirm_user')">
       <span>Administration</span>
     </a>
-    <div id="confirm_user" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+    <div id="confirm_user" class="collapse">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="{% url 'confirm_users' %}">Confirm User(s)</a>
       </div>
@@ -94,10 +86,8 @@
 
   <hr class="sidebar-divider">
 
-
-  <!-- Sidebar Toggler (Sidebar) -->
+  <!-- Sidebar Toggler -->
   <div class="text-center d-none d-md-inline">
     <button class="rounded-circle border-0" id="sidebarToggle"></button>
   </div>
-
 </ul>
