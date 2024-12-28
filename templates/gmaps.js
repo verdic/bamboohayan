@@ -4,6 +4,7 @@ var locations = [
     {
       lat: {{ location.latitude }}, 
       lng: {{ location.longitude }}},
+      accession_no: '{{ location.accession_no }}',
       species: '{{ location.bamboo_species.common_name|escapejs|safe }}',
       place: '{{ location.place }}',
       area_population: {{ location.area_population }}
@@ -31,7 +32,8 @@ function initMap() {
         });
     
         const infoWindow = new google.maps.InfoWindow({
-            content: `<strong>Species:</strong> ${location.species}<br>
+            content: `<strong>Accession No.:</strong> ${location.accession_no}<br>
+                      <strong>Species:</strong> ${location.species}<br>
                       <strong>Place:</strong> ${location.place}<br>
                       <strong>Population in the Area:</strong> ${location.area_population}`,
             disableAutoPan: true, // Prevent auto-panning

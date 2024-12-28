@@ -3,11 +3,46 @@ from bamboo_species.models import BambooSpecies, SpeciesLocation
 from django.db.models import Count, Sum, Value
 from django.db.models.functions import Concat
 import random
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 
 import plotly.graph_objects as go
 from plotly.offline import plot
 
+############## FOR HEATMAP ##############
+from folium import Map
+from folium.plugins import HeatMap
+from bamboo_species.models import SpeciesLocation
+import os
+from django.conf import settings
+
+def heatmap_view(request):
+    # Extract data from SpeciesLocation model
+    locations = SpeciesLocation.objects.all()
+    heatmap_data = []
+    for location in locations:
+        try:
+            lat, lon, _ = parse_coordinates_with_elevation(location.coordinate)  # Utility function to parse coordinates
+            heatmap_data.append([lat, lon, location.area_population])
+        except Exception as e:
+            print(f"Error processing location {location}: {e}")
+
+    # Create a folium map centered around a default coordinate
+    map_center = [18.16668, 121.74556]  # Example center point
+    bamboo_map = Map(location=map_center, zoom_start=10)
+
+    # Add heatmap layer
+    HeatMap(heatmap_data, radius=15).add_to(bamboo_map)
+
+    # Ensure the directory exists
+    output_dir = os.path.join(settings.BASE_DIR, "static/dss")
+    os.makedirs(output_dir, exist_ok=True)
+
+    # Save the map to an HTML file
+    map_path = os.path.join(output_dir, "bamboo_heatmap.html")
+    bamboo_map.save(map_path)
+
+    # Return the file path as a response (or render it in a template)
+    return render(request, "dss/bamboo_heatmap.html", {"heatmap_data": heatmap_data})
 
 def get_all_habitats():
    habitats = BambooSpecies.objects.annotate(habitat_concat=Concat('habitat', Value(','))).values_list('habitat_concat', flat=True).distinct()

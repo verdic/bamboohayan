@@ -20,61 +20,6 @@ from django.utils.dateparse import parse_date
 #########################################
 # CRUD: Species Locatiopn Coordinate    #
 #########################################
-
-# def coord_list_species(request, species_id):
-#     # Get the search query from the request's GET parameters
-#     query = request.GET.get('q', '')# Fetch SpeciesLocation records filtered by species_id
-    
-#     locations = SpeciesLocation.objects.filter(bamboo_species=species_id)
-
-#     if query:
-#         locations = locations.filter(
-#             Q(accession_no__icontains=query) |
-#             Q(bamboo_species__common_name__icontains=query) |
-#             Q(coordinate__icontains=query) |
-#             Q(area_population__icontains=query) |
-#             Q(collection_date__icontains=query) |
-#             Q(place__icontains=query)
-#         )
-#     # Get sorting parameters
-#     sort_by = request.GET.get('sort_by', 'id')  # Default sorting column
-#     sort_direction = request.GET.get('sort_direction', 'asc')  # Default to ascending
-
-#     # Apply sorting
-#     if sort_direction == 'desc':
-#         locations = locations.order_by(f'-{sort_by}')
-#     else:
-#         locations = locations.order_by(sort_by)
-
-#     # Get the number of items per page from the request, default to 5
-#     items_per_page = request.GET.get('items_per_page', 5)
-#     try:
-#         items_per_page = int(items_per_page)
-#     except ValueError:
-#         items_per_page = 5  # Default fallback
-
-#     # Apply pagination
-#     paginator = Paginator(locations, items_per_page)
-#     page = request.GET.get('page')
-
-#     try:
-#         coords = paginator.page(page)
-#     except PageNotAnInteger:
-#         coords = paginator.page(1)
-#     except EmptyPage:
-#         coords = paginator.page(paginator.num_pages)
-
-#     # Prepare context
-#     context = {
-#         'species_locations_json': json.dumps(getLocations(species_id)),  # Map markers
-#         'species_id': species_id,
-#         'coords': coords,  # Paginated and sorted table data
-#         'items_per_page': items_per_page,
-#         'sort_by': sort_by,
-#         'sort_direction': sort_direction,
-#     }
-
-#     return render(request, 'coord/coord_list.html', context)
 def coord_list(request, species_id=None):
     locations = SpeciesLocation.objects.all()
     if species_id:
@@ -286,10 +231,7 @@ def coord_delete(request, pk):
 #########################################
 # CRUD: Bamboo Species                  #
 #########################################
-# def species_list(request):
-#     context={}
-#     context['species'] = BambooSpecies.objects.all()
-#     return render(request, 'species/species_list.html', context)
+
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -417,6 +359,7 @@ def getLocations(species_id=None):
         try:
             latitude, longitude, elevation = parse_coordinates(location.coordinate)
             species_location = {
+                'accession_no': location.accession_no,
                 'latitude': latitude,
                 'longitude': longitude,
                 'elevation': elevation,

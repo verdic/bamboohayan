@@ -70,6 +70,20 @@
     </div>
   </li>
 
+  <!-- Decision Supports -->
+  <hr class="sidebar-divider">
+
+  <li class="nav-item">
+    <a class="nav-link" href="#" onclick="toggleCollapse('confirm_user')">
+      <span>Decision Support</span>
+    </a>
+    <div id="confirm_user" class="collapse">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'bamboo-heatmap' %}">View Heatmap</a>
+      </div>
+    </div>
+  </li>
+
   <hr class="sidebar-divider">
 
   <!-- Administration -->

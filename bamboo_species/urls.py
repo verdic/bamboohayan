@@ -27,4 +27,5 @@ urlpatterns = [
     path('coord_detail/<str:pk>', views.coord_detail, name='coord-detail'),
     path('coord_update/<str:pk>', views.coord_update, name='coord-update'),
     path('coord_delete/<str:pk>', views.coord_delete, name='coord-delete'),
+
 ]
