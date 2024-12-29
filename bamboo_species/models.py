@@ -57,7 +57,7 @@ class MorphologicalProfile(models.Model):
         return self.bamboo_species
 
     class Meta:
-        db_table = 'MorphologicalProfile' 
+        db_table = 'MorphologicalProfile'
 
 class PhytochemicalProfile(models.Model):
     bamboo_species = models.OneToOneField(BambooSpecies, on_delete=models.CASCADE, primary_key=True, related_name='bamboo_species_phytochem_profile')
@@ -76,27 +76,27 @@ class PhytochemicalProfile(models.Model):
         return self.bamboo_species
 
     class Meta:
-        db_table = 'PhytochemicalProfile' 
+        db_table = 'PhytochemicalProfile'
 
 class MolecularProfile(models.Model):
     bamboo_species = models.OneToOneField(BambooSpecies, on_delete=models.CASCADE, primary_key=True, related_name='bamboo_species_molecular_profile')
     morpho_family=models.CharField(max_length=25)                   # morpho family
     morpho_genus=models.CharField(max_length=40)                    # morpho genus
-    morpho_species=models.CharField(max_length=40)                  # morpho species
+    morpho_species=models.CharField(max_length=60)                  # morpho species
     morpho_variety=models.CharField(max_length=25, null=True)       # morpho variety
     dna_rbcl_family=models.CharField(max_length=25)                 # dna rbcl family
     dna_rbcl_genus=models.CharField(max_length=40)                  # dna rbcl genus
-    dna_rbcl_species=models.CharField(max_length=40)                # dna rbcl species
+    dna_rbcl_species=models.CharField(max_length=60)                # dna rbcl species
     dna_rbcl_variety=models.CharField(max_length=25, null=True)     # dna rbcl variety
     dna_query_length = models.IntegerField()                        # dna query length
     percentage_identification= models.FloatField()                  # percentage identification
-    
+
     def __str__(self):
         return self.bamboo_species
 
     class Meta:
-        db_table = 'MolecularProfile' 
+        db_table = 'MolecularProfile'
 
-        
-    
+
+
 
