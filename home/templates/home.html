@@ -111,7 +111,9 @@
                         Species Location Population Report
                     </div>
                     <div class="card-body">
-                        <a href="{% url 'print-place-population' %}" target="_blank" class="btn btn-secondary mb-2 float-right"> <i class="fas fa-print mr-2"></i>Print</a>
+                        <a href="{% url 'print-place-population' %}?q={{ query }}" target="_blank" class="btn btn-secondary mb-2 float-right">
+                            <i class="fas fa-print mr-2"></i> Print
+                        </a>
                         {% include "reports/species_place_population_report.html" %}
                     </div>
                 </div>

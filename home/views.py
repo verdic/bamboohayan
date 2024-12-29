@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Count, Sum, Value
 from django.db.models.functions import Concat
 import random
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse
 from collections import Counter
 import re
 import pandas as pd
@@ -554,6 +554,7 @@ def generate_place_population_report():
       locations = SpeciesLocation.objects.filter(bamboo_species=species)
       for location in locations:
          report_data.append({
+               'accession_no': location.accession_no,
                'common_name': species.common_name,
                'place': location.place,
                'area_population': location.area_population
@@ -561,23 +562,48 @@ def generate_place_population_report():
 
    return report_data
 
+from django.db.models import Q
+from django.core.paginator import Paginator
 def index(request):
-   context = {
-        'column_chart': generate_column_chart(get_chart_data()),
+    # Get the search query from the request
+    query = request.GET.get('q', '')
+
+    # Fetch all data for generating charts and summaries
+    report_data = generate_place_population_report()
+    chart_data = get_chart_data()
+
+    # Filter `report_data` based on the search query, if provided
+    if query:
+        report_data = [
+            item for item in report_data if
+            query.lower() in item['accession_no'].lower() or
+            query.lower() in item['common_name'].lower() or
+            query.lower() in item['place'].lower()
+        ]
+
+    # Paginate the filtered or unfiltered `report_data`
+    paginator = Paginator(report_data, 10)  # 10 items per page
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    # Prepare context for the template
+    context = {
+        'column_chart': generate_column_chart(chart_data),
         'species': BambooSpecies.objects.all().count(),
         'mapped_species': get_maped_species(),
         'area_population_all': get_population_all(),
         'elevation_chart': generate_elevation_chart(),
-        'report_data': generate_place_population_report(),
+        'report_data': page_obj,  # Paginated data
         'municipalities': [
             "Abulug", "Alcala", "Allacapan", "Amulung", "Aparri", "Baggao", "Ballesteros", "Buguey", "Calayan",
             "Camalaniugan", "Claveria", "Enrile", "Gattaran", "Gonzaga", "Iguig", "Lal-lo", "Lasam", "Pamplona",
             "Peñablanca", "Piat", "Rizal", "Sanchez-Mira", "Santa Ana", "Santa Praxedes", "Santa Teresita",
             "Santo Niño", "Solana", "Tuao", "Tuguegarao City"
-        ]
+        ],
+        'query': query,  # Include the query for reuse in the template
     }
 
-   return render(request, 'home.html', context)
+    return render(request, 'home.html', context)
 
 def generate_municipality_chart(request):
     municipalities = [
@@ -609,9 +635,41 @@ def generate_municipality_chart(request):
 from django.template.loader import render_to_string
 # from django.http import HttpResponse
 
+from datetime import datetime
 def print_place_population(request):
-   # Generate the HTML content using the template and data
-   report_data = generate_place_population_report()
-   context = {'report_data': report_data}
+    # Get the search query from the request
+    query = request.GET.get('q', '')
 
-   return render(request, 'reports/print_place_population_report.html', context)
+    # Fetch and filter data based on the search query
+    locations = SpeciesLocation.objects.all()
+    if query:
+        locations = locations.filter(
+            Q(accession_no__icontains=query) |  # Search by Accession No.
+            Q(bamboo_species__common_name__icontains=query) |  # Search by Common Name
+            Q(place__icontains=query)  # Search by Place
+        )
+
+    # Prepare the report data for the template
+    report_data = [
+        {
+            'accession_no': location.accession_no,
+            'common_name': location.bamboo_species.common_name,
+            'place': location.place,
+            'area_population': location.area_population
+        }
+        for location in locations
+    ]
+
+    # Render the filtered data in the print template
+    context = {
+        'report_data': report_data,
+        'current_date': datetime.now().strftime("%B %d, %Y"),  # Format: "Month Day, Year"
+        }
+    return render(request, 'reports/print_place_population_report.html', context)
+
+# def print_place_population(request):
+#    # Generate the HTML content using the template and data
+#    report_data = generate_place_population_report()
+#    context = {'report_data': report_data}
+
+#    return render(request, 'reports/print_place_population_report.html', context)

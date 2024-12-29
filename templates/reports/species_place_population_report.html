@@ -1,6 +1,35 @@
+<style>
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .pagination .page-item {
+        margin: 0 5px;
+    }
+    .pagination .page-link {
+        color:rgb(110, 114, 113);
+        text-decoration: none;
+        padding: 5px 10px;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+    }
+    .pagination .page-item.active .page-link {
+        background-color:rgb(110, 114, 113);
+        color: #fff;
+        border-color:rgb(53, 54, 55);
+    }
+</style>
+
+<form method="get" class="form-inline mb-3">
+    <input type="text" name="q" class="form-control mr-2" placeholder="Search by Accession No., Common Name, or Place..." value="{{ query }}">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+
 <table id="speciesPopulationTable" class="table table-hover">
     <thead>
         <tr>
+            <th>Accession No.</th>
             <th>Common Name</th>
             <th>Place</th>
             <th>Area Population</th>
@@ -8,7 +37,8 @@
     </thead>
     <tbody>
         {% for item in report_data %}
-            <tr class="table-light">
+            <tr>
+                <td>{{ item.accession_no }}</td>
                 <td>{{ item.common_name }}</td>
                 <td>{{ item.place }}</td>
                 <td>{{ item.area_population }}</td>
@@ -17,14 +47,49 @@
     </tbody>
 </table>
 
+
+<!-- Pagination Controls -->
+<div class="pagination">
+    <ul class="pagination">
+        {% if report_data.has_previous %}
+            <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ report_data.previous_page_number }}">Previous</a></li>
+        {% endif %}
+
+        {% for num in report_data.paginator.page_range %}
+            {% if report_data.number == num %}
+                <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+            {% elif num > report_data.number|add:'-3' and num < report_data.number|add:'3' %}
+                <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+            {% endif %}
+        {% endfor %}
+
+        {% if report_data.has_next %}
+            <li class="page-item"><a class="page-link" href="?page={{ report_data.next_page_number }}">Next</a></li>
+            <li class="page-item"><a class="page-link" href="?page={{ report_data.paginator.num_pages }}">Last</a></li>
+        {% endif %}
+    </ul>
+</div>
+
+
 <script>
     $(document).ready(function () {
-        $('#speciesPopulationTable').DataTable({
-            "paging": true,
-            "searching": true,
-            "info": true,
-            "lengthChange": true,
-            "pageLength": 10
+        // Real-time search for specific columns
+        $('#tableSearch').on('keyup', function () {
+            let value = $(this).val().toLowerCase(); // Get the search value
+
+            $('#speciesPopulationTable tbody tr').filter(function () {
+                let accessionNo = $(this).find('td:nth-child(1)').text().toLowerCase();
+                let commonName = $(this).find('td:nth-child(2)').text().toLowerCase();
+                let place = $(this).find('td:nth-child(3)').text().toLowerCase();
+
+                // Show the row if any column matches the search
+                $(this).toggle(
+                    accessionNo.indexOf(value) > -1 || 
+                    commonName.indexOf(value) > -1 || 
+                    place.indexOf(value) > -1
+                );
+            });
         });
     });
 </script>

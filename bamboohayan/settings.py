@@ -27,8 +27,8 @@ GOOGLE_API_KEY = "AIzaSyAmr6OBJ_ja2rhvNsTejK2lk7ZiIbTGg6g"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# ALLOWED_HOSTS = []
-ALLOWED_HOSTS = [ 'verdict.pythonanywhere.com', 'www.bdgdss.net']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = [ 'verdict.pythonanywhere.com', 'www.bdgdss.net',]
 
 
 # Application definition

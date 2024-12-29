@@ -1,20 +1,86 @@
- <h3>Bamboo Species Population By Location</h3>   
-    
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Common Name</th>
-            <th>Place</th>
-            <th>Area Population</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for item in report_data %}
-            <tr class="table-light">
-                <td>{{ item.common_name }}</td>
-                <td>{{ item.place }}</td>
-                <td>{{ item.area_population }}</td>
-            </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            padding: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            border-bottom: 2px solid #333;
+        }
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+            padding: 5px;
+            font-size: 12px;
+            border-top: 2px solid #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table th, table td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background-color: #f2f2f2;
+        }
+        .table-container {
+            margin: 20px;
+        }
+        @media print {
+            footer {
+                position: fixed;
+                bottom: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        Bamboo Database and Geotagging with Decision Support System
+    </header>
+
+    <div class="table-container">
+        <h3 style="text-align: center;">Bamboo Species Population by Location</h3>   
+        <table>
+            <thead>
+                <tr>
+                    <th>Accession No.</th>
+                    <th>Common Name</th>
+                    <th>Place</th>
+                    <th>Area Population</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in report_data %}
+                    <tr>
+                        <td>{{ item.accession_no }}</td>
+                        <td>{{ item.common_name }}</td>
+                        <td>{{ item.place }}</td>
+                        <td>{{ item.area_population }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <footer>
+        Report generated on: {{ current_date }}
+    </footer>
+</body>
+</html>
