@@ -54,6 +54,7 @@
   </li>
   {% endif %}
 
+
   <!-- Divider -->
   <hr class="sidebar-divider">
 
@@ -74,10 +75,10 @@
   <hr class="sidebar-divider">
 
   <li class="nav-item">
-    <a class="nav-link" href="#" onclick="toggleCollapse('confirm_user')">
+    <a class="nav-link" href="#" onclick="toggleCollapse('dss')">
       <span>Decision Support</span>
     </a>
-    <div id="confirm_user" class="collapse">
+    <div id="dss" class="collapse">
       <div class="bg-white py-2 collapse-inner rounded">
         <a class="collapse-item" href="{% url 'bamboo-heatmap' %}">Population Density</a>
         <a class="collapse-item" href="{% url 'habitat-insights' %}">Habitat Suitability</a>
@@ -91,31 +92,34 @@
     </div>
   </li>
 
+  {% if species_id and user.is_authenticated %}
+  <hr class="sidebar-divider">
+
+  <!-- Account -->
+  <li class="nav-item">
+    <a class="nav-link" href="#" onclick="toggleCollapse('confirm_user')">
+      <span>Administration</span>
+    </a>
+    <div id="confirm_user" class="collapse">
+      <div class="bg-white py-2 collapse-inner rounded">
+        <a class="collapse-item" href="{% url 'confirm_users' %}">Confirm User(s)</a>
+      </div>
+    </div>
+  </li>
+
+    {% endif %}
 
   <hr class="sidebar-divider">
 
-  <div class="container mt-4">
-    <div class="copyright text-center my-auto">
-    <span>Copyright &copy; 2024</span>
-    </div>
+   <!--Sidebar Toggler-->
+  <div class="text-center d-none d-md-inline">
+    <button class="rounded-circle border-0" id="sidebarToggle"></button>
   </div>
 
-  <!-- Administration -->
-  <!--<li class="nav-item">-->
-  <!--  <a class="nav-link" href="#" onclick="toggleCollapse('confirm_user')">-->
-  <!--    <span>Administration</span>-->
-  <!--  </a>-->
-  <!--  <div id="confirm_user" class="collapse">-->
-  <!--    <div class="bg-white py-2 collapse-inner rounded">-->
-  <!--      <a class="collapse-item" href="{% url 'confirm_users' %}">Confirm User(s)</a>-->
-  <!--    </div>-->
-  <!--  </div>-->
-  <!--</li>-->
 
-  <!--<hr class="sidebar-divider">-->
-
-  <!-- Sidebar Toggler -->
-  <!--<div class="text-center d-none d-md-inline">-->
-  <!--  <button class="rounded-circle border-0" id="sidebarToggle"></button>-->
-  <!--</div>-->
+    <div class="container mt-4">
+        <div class="copyright text-center my-auto">
+            <span>Copyright &copy; 2024</span>
+        </div>
+    </div>
 </ul>

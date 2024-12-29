@@ -3,10 +3,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.models import User
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm 
+from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth import logout
+from django.contrib.auth.decorators import user_passes_test
+
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
 
 @login_required
 def change_username(request):
@@ -43,7 +47,7 @@ def login_view(request):
             if user is not None:
                 login(request, user)
                 # User is authenticated, redirect to a success page
-                return redirect('home') 
+                return redirect('home')
             else:
                 # Invalid credentials, display an error message
                 error_message = 'Invalid username or password'
@@ -63,7 +67,7 @@ def register_view(request):
         form = RegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False 
+            user.is_active = False
             form.save()
             # Registration successful, redirect to login page
             return redirect('login')
@@ -71,7 +75,7 @@ def register_view(request):
         form = RegistrationForm()
     return render(request, 'useraccounts/registration.html', {'form': form})
 
-@login_required
+@user_passes_test(admin_required)
 def confirm_users(request):
     if not request.user.is_superuser:
         return redirect('home')  # Redirect to the home page or any other appropriate page if the user is not a superuser
@@ -90,4 +94,3 @@ def confirm_users(request):
 
     return render(request, 'useraccounts/confirm_users.html', {'users_to_confirm': users_to_confirm})
 
-    

@@ -1,6 +1,6 @@
 import pandas as pd
 from django.shortcuts import render, get_object_or_404, redirect
-from .models import (BambooSpecies, MorphologicalProfile, 
+from .models import (BambooSpecies, MorphologicalProfile,
     PhytochemicalProfile, MolecularProfile, SpeciesLocation)
 from .forms import SpeciesForm, MorphoForm, PhytochemForm, MolecularForm, CoordForm
 from bamboohayan import settings
@@ -16,6 +16,10 @@ from django.db import IntegrityError
 import json
 import datetime
 from django.utils.dateparse import parse_date
+from django.contrib.auth.decorators import user_passes_test
+
+def admin_required(user):
+    return user.is_authenticated and user.is_staff
 
 #########################################
 # CRUD: Species Locatiopn Coordinate    #
@@ -73,7 +77,7 @@ def coord_list(request, species_id=None):
     }
     return render(request, 'coord/coord_list.html', context)
 
-@login_required
+@user_passes_test(admin_required)
 def coord_create(request):
     if request.method == 'POST':
         form = CoordForm(request.POST, request.FILES)
@@ -94,7 +98,7 @@ def coord_detail(request, pk):
     form = CoordForm(instance=coord_profile, disable_fields=True)
     return render(request, 'coord/coord_form.html', {'form': form, 'pk': pk})
 
-@login_required
+@user_passes_test(admin_required)
 def coord_species_create(request, species_id):
     species = get_object_or_404(BambooSpecies, pk=species_id)
     if request.method=='POST':
@@ -108,7 +112,7 @@ def coord_species_create(request, species_id):
         form = CoordForm(bamboo_species=species, initial={'bamboo_species': species})
     return render(request, 'coord/coord_form.html', {'form': form, 'species': species, 'createMode': True, 'editmode': False})
 
-@login_required
+@user_passes_test(admin_required)
 def upload_coord_data(request, species_id):
     if request.method == 'POST':
         file = request.FILES.get('file')
@@ -209,7 +213,7 @@ def clean_coordinates(coordinate):
         print(f"Error cleaning coordinate '{coordinate}': {e}")
         raise ValueError(f"Could not clean coordinate: {coordinate}")
 
-@login_required
+@user_passes_test(admin_required)
 def coord_update(request, pk):
     coord_profile = get_object_or_404(SpeciesLocation, pk=pk)
     form = CoordForm(instance=coord_profile)
@@ -217,10 +221,10 @@ def coord_update(request, pk):
         form = CoordForm(request.POST, instance=coord_profile)
         if form.is_valid():
             form.save()
-            return redirect('coord-list') 
+            return redirect('coord-list')
     return render(request, 'coord/coord_form.html', {'form': form, 'pk': pk, 'editMode': True})
 
-@login_required
+@user_passes_test(admin_required)
 def coord_delete(request, pk):
     coord_profile = get_object_or_404(SpeciesLocation, pk=pk)
     if request.method == 'POST':
@@ -388,7 +392,7 @@ def species_detail(request, species_id):
 
     return render(request, 'species/species_detail.html', context)
 
-@login_required
+@user_passes_test(admin_required)
 def species_update(request, species_id):
     bamboo_species = get_object_or_404(BambooSpecies, id = species_id)
     if request.method == 'POST':
@@ -400,7 +404,7 @@ def species_update(request, species_id):
         form = SpeciesForm(instance=bamboo_species)
     return render(request, 'species/species_form.html', {'form': form, 'editmode': True})
 
-@login_required
+@user_passes_test(admin_required)
 def species_create(request):
     if request.method=='POST':
         form = SpeciesForm(request.POST, request.FILES)
@@ -411,7 +415,7 @@ def species_create(request):
         form = SpeciesForm()
     return render(request, 'species/species_form.html', {'form': form, 'editmode': False})
 
-@login_required
+@user_passes_test(admin_required)
 def species_delete(request, species_id):
     bamboo_species = get_object_or_404(BambooSpecies, id = species_id)
     if request.method=='POST':
@@ -429,7 +433,7 @@ def morpho_list(request):
     df = pd.DataFrame(data, columns=field_names)
     return render(request, 'morpho/morpho_list.html', {'df': df})
 
-@login_required
+@user_passes_test(admin_required)
 def morpho_create(request, species_id):
     species = get_object_or_404(BambooSpecies, pk=species_id)
     if request.method=='POST':
@@ -443,7 +447,7 @@ def morpho_create(request, species_id):
         form = MorphoForm(initial={'bamboo_species': species})
     return render(request, 'morpho/morpho_form.html', {'form': form, 'species': species, 'editmode': False})
 
-@login_required
+@user_passes_test(admin_required)
 def morpho_update(request, pk):
     morpho_profile = get_object_or_404(MorphologicalProfile, pk=pk)
     form = MorphoForm(instance=morpho_profile)
@@ -454,7 +458,7 @@ def morpho_update(request, pk):
             return redirect('species-detail', pk )
     return render(request, 'morpho/morpho_form.html', {'form': form})
 
-@login_required   
+@user_passes_test(admin_required)
 def morpho_delete(request, pk):
     morpho_profile = get_object_or_404(MorphologicalProfile, pk=pk)
     if request.method == 'POST':
@@ -465,7 +469,7 @@ def morpho_delete(request, pk):
 #########################################
 # CRUD: Phytochemical Profile           #
 #########################################
-@login_required
+@user_passes_test(admin_required)
 def phytochem_create(request, species_id):
     species = get_object_or_404(BambooSpecies, pk=species_id)
     if request.method=='POST':
@@ -478,7 +482,8 @@ def phytochem_create(request, species_id):
     else:
         form = PhytochemForm(initial={'bamboo_species': species})
     return render(request, 'phytochem/phytochem_form.html', {'form': form, 'species': species, 'editmode': False})
-@login_required
+
+@user_passes_test(admin_required)
 def phytochem_update(request, pk):
     phytochem_profile = get_object_or_404(PhytochemicalProfile, pk=pk)
     form = PhytochemForm(instance=phytochem_profile)
@@ -488,7 +493,7 @@ def phytochem_update(request, pk):
             form.save()
             return redirect('species-detail', pk )
     return render(request, 'phytochem/phytochem_form.html', {'form': form})
-@login_required
+@user_passes_test(admin_required)
 def phytochem_delete(request, pk):
     phytochem_profile = get_object_or_404(PhytochemicalProfile, pk=pk)
     if request.method == 'POST':
@@ -499,7 +504,7 @@ def phytochem_delete(request, pk):
 #########################################
 # CRUD: Molecular Profile               #
 #########################################
-@login_required
+@user_passes_test(admin_required)
 def molecular_create(request, species_id):
     species = get_object_or_404(BambooSpecies, pk=species_id)
     if request.method=='POST':
@@ -513,10 +518,10 @@ def molecular_create(request, species_id):
         form = MolecularForm(initial={'bamboo_species': species})
     return render(request, 'molecular/molecular_form.html', {'form': form, 'species': species, 'editmode': False})
 
-@login_required
+@user_passes_test(admin_required)
 def molecular_update(request, pk):
     molecular_profile = get_object_or_404(MolecularProfile, pk=pk)
-    form = MolecularForm(instance=molecular_profile) 
+    form = MolecularForm(instance=molecular_profile)
     if request.method == 'POST':
         form = MolecularForm(request.POST, instance=molecular_profile)
         if form.is_valid():
@@ -524,7 +529,7 @@ def molecular_update(request, pk):
             return redirect('species-detail', pk )
     return render(request, 'molecular/molecular_form.html', {'form': form})
 
-@login_required
+@user_passes_test(admin_required)
 def molecular_delete(request, pk):
     molecular_profile = get_object_or_404(MolecularProfile, pk=pk)
     if request.method == 'POST':
