@@ -11,7 +11,7 @@
 {% block content %}
     <div class="card">
         <div class="card-header p-3 mb-2 bg-gradient-success text-white">
-            BASIC INFORMATION 
+            BASIC INFORMATION
         </div>
         <div class="card-body">
             <div class="row">
@@ -33,10 +33,9 @@
                             <h5><strong>Image </strong></h5></div>
                         <div class="card-body h-100">
                             <figure class="figure">
-                                <img src="{{ species.image.url }}" 
-                                    class="figure-img img-fluid rounded" 
+                                <img src="{{ species.image.url }}"
+                                    class="figure-img img-fluid rounded"
                                     alt="Image of {{ species.common_name }}">
-                                {% comment %} <figcaption class="figure-caption">Image of {{ species.common_name }}.</figcaption> {% endcomment %}
                             </figure>
                             <a class="btn btn-sm btn-info mb-2" href="{% url 'species-update' species.id %}">Change Image</a>
                         </div>
@@ -67,50 +66,50 @@
     </div>
 
     {% if user.is_authenticated %}
-    <div id="accordion" class="mt-4">
+    <!--<div id="accordion" class="mt-4">-->
         <div class="card" id="morpho-card">
             <div class="card-header p-3 mb-2 bg-gradient-success text-white">
-            <a class="card-link text-white" data-toggle="collapse" href="#morpho">
-                MORPHOLOGICAL PROFILE 
-            </a>
+                <!--<a class="card-link text-white" data-toggle="collapse" href="#morpho">-->
+                    MORPHOLOGICAL PROFILE
+                <!--</a>-->
             </div>
-            <div id="morpho" class="collapse" data-parent="#accordion">
+                <!--<div id="morpho" class="collapse" data-parent="#accordion">-->
             <div class="card-body">
-                {% if morpho.bamboo_species == species %}
-                    {% include 'morpho/morpho.html' %}
-                {% else %}
-                    <strong>No morphological record yet.</strong>
-                    <a class = "text-success " href="{% url 'morpho-create' species.id %}">Create One Now!</a>
-                {% endif %}
-            </div>
+                    {% if morpho.bamboo_species == species %}
+                        {% include 'morpho/morpho.html' %}
+                    {% else %}
+                        <strong>No morphological record yet.</strong>
+                        <a class = "text-success " href="{% url 'morpho-create' species.id %}">Create One Now!</a>
+                    {% endif %}
+
             </div>
         </div>
 
         <div class="card" id="pytho-card">
             <div class="card-header p-3 mb-2 bg-gradient-warning text-dark">
-            <a class="card-link text-white" data-toggle="collapse" href="#phyto">
-                PHYTOCHEMICAL PROFILE
-            </a>
+                <!--<a class="card-link text-white" data-toggle="collapse" href="#phyto">-->
+                    PHYTOCHEMICAL PROFILE
+                <!--</a>-->
             </div>
-            <div id="phyto" class="collapse" data-parent="#accordion">
-            <div class="card-body">
-                {% if phytochem.bamboo_species == species %}
-                    {% include 'phytochem/phytochem.html' %}
-                {% else %}
-                    <strong>No phytochemical record yet.</strong>
-                    <a class = "text-success " href="{% url 'phytochem-create' species.id %}">Create One Now!</a>
-                {% endif %}
-            </div>
+                <!--<div id="phyto" class="collapse" data-parent="#accordion">-->
+                <div class="card-body">
+                    {% if phytochem.bamboo_species == species %}
+                        {% include 'phytochem/phytochem.html' %}
+                    {% else %}
+                        <strong>No phytochemical record yet.</strong>
+                        <a class = "text-success " href="{% url 'phytochem-create' species.id %}">Create One Now!</a>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
         <div class="card" id="mol-card">
             <div class="card-header p-3 mb-2 bg-gradient-danger text-white">
-            <a class="card-link text-white" data-toggle="collapse" href="#molecular">
-                MOLECULAR PROFILE
-            </a>
+                <!--<a class="card-link text-white" data-toggle="collapse" href="#molecular">-->
+                    MOLECULAR PROFILE
+                <!--</a>-->
             </div>
-            <div id="molecular" class="collapse" data-parent="#accordion">
+                <!--<div id="molecular" class="collapse" data-parent="#accordion">-->
             <div class="card-body">
                 {% if molecular.bamboo_species == species %}
                     {% include 'molecular/molecular.html' %}
@@ -121,7 +120,7 @@
             </div>
             </div>
         </div>
-    </div>
+    <!--</div>-->
     {% endif %}
 
  {% if deleteMode %}
@@ -132,7 +131,7 @@
                     <h5 class="modal-title" id="exampleModalLabel">Delete Record?</h5>
                     <a  href="{% url 'species-detail' species.id %}">
                         <span aria-hidden="true">×</span>
-                    </a>    
+                    </a>
                 </div>
                 <div class="modal-body">
                     <p>This record will be permanently deleted.</p>
